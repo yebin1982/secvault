@@ -109,7 +109,7 @@ pip install --upgrade pip
 
 ```txt
 Flask==2.3.3
-Flask-SQLAlchemy==3.0.5
+Flask-SQLAlchemy
 Flask-Login==0.6.3
 Flask-WTF==1.1.1
 Flask-Mail==0.9.1
