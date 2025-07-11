@@ -115,7 +115,7 @@ Flask-WTF==1.1.1
 Flask-Mail==0.9.1
 Flask-Migrate==4.0.5
 PyMySQL==1.1.0
-cryptography==41.0.4
+cryptography
 bcrypt==4.0.1
 python-dotenv==1.0.0
 WTForms==3.0.1
