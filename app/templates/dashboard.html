@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="mb-4">欢迎回来，{{ current_user.username }}！</h2>
+
+        <!-- 搜索框 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <input type="text" id="searchInput" class="form-control form-control-lg" 
+                       placeholder="搜索服务、用户名、邮箱..." oninput="performSearch()">
+            </div>
+        </div>
+
+        <!-- 添加新密码按钮 -->
+        <div class="text-end mb-4">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addPasswordModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                </svg>
+                添加新密码
+            </button>
+        </div>
+        
+        <!-- 搜索结果 -->
+        <div id="searchResults">
+            <p class="text-muted">输入关键词开始搜索，或留空以显示所有记录。</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- 添加密码模态框 -->
+<div class="modal fade" id="addPasswordModal" tabindex="-1" aria-labelledby="addPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPasswordModalLabel">添加新密码</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addPasswordForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="serviceName" class="form-label">服务名称 *</label>
+                        <input type="text" class="form-control" id="serviceName" name="service_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">用户名</label>
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">邮箱</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">密码 *</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('password', this)">
+                                显示
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">备注</label>
+                        <textarea class="form-control" id="notes" name="notes"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑密码模态框 -->
+<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPasswordModalLabel">编辑密码</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editPasswordForm">
+                <input type="hidden" id="editEntryId" name="entry_id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editServiceName" class="form-label">服务名称 *</label>
+                        <input type="text" class="form-control" id="editServiceName" name="service_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editUsername" class="form-label">用户名</label>
+                        <input type="text" class="form-control" id="editUsername" name="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">邮箱</label>
+                        <input type="email" class="form-control" id="editEmail" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPassword" class="form-label">新密码 (如需修改)</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="editPassword" name="password">
+                             <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('editPassword', this)">
+                                显示
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editNotes" class="form-label">备注</label>
+                        <textarea class="form-control" id="editNotes" name="notes"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">更新</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
