@@ -23,14 +23,15 @@ def create_app():
     
     @login_manager.user_loader
     def load_user(user_id):
+        # Import here to avoid circular imports
         from app.models import User
         return User.query.get(int(user_id))
-    
-    # 注册蓝图
-    from app.auth import auth as auth_blueprint
+
+    # Import and register blueprints
+    from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
-    
-    from app.main import main as main_blueprint
+
+    from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-    
+
     return app
