@@ -86,6 +86,7 @@ def add_password():
         
         # 创建密码条目
         entry = PasswordEntry(
+            user_id=current_user.id,  # 关联到当前用户
             service_name=service_name,
             username=username,
             email=email,
@@ -106,7 +107,7 @@ def add_password():
 @login_required
 def edit_password(entry_id):
     """编辑密码条目"""
-    entry = PasswordEntry.query.get_or_404(entry_id)
+    entry = PasswordEntry.query.filter_by(id=entry_id, user_id=current_user.id).first_or_404()
     
     if request.method == 'GET':
         # 返回编辑表单数据（包含解密后的密码）
@@ -151,7 +152,7 @@ def edit_password(entry_id):
 def delete_password(entry_id):
     """删除密码条目"""
     try:
-        entry = PasswordEntry.query.get_or_404(entry_id)
+        entry = PasswordEntry.query.filter_by(id=entry_id, user_id=current_user.id).first_or_404()
         db.session.delete(entry)
         db.session.commit()
         return jsonify({'success': True, 'message': '删除成功'})
@@ -165,7 +166,7 @@ def delete_password(entry_id):
 def view_password(entry_id):
     """查看密码（解密显示）"""
     try:
-        entry = PasswordEntry.query.get_or_404(entry_id)
+        entry = PasswordEntry.query.filter_by(id=entry_id, user_id=current_user.id).first_or_404()
         encryption = PasswordEncryption()
         decrypted_password = encryption.decrypt(entry.password_encrypted)
         
@@ -183,7 +184,7 @@ def view_password(entry_id):
 def search():
     """搜索密码条目"""
     query = request.args.get('q', '')
-    entries = search_entries(query)
+    entries = search_entries(query, current_user.id)
     
     results = []
     for entry in entries:

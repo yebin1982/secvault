@@ -21,15 +21,17 @@ class PasswordEncryption:
         """解密密码"""
         return self.cipher.decrypt(encrypted_password.encode()).decode()
 
-def search_entries(query):
-    """搜索密码条目"""
-    if not query:
-        # 返回所有条目
-        return PasswordEntry.query.all()
+def search_entries(query, user_id):
+    """搜索指定用户的密码条目"""
+    base_query = PasswordEntry.query.filter_by(user_id=user_id)
 
-    # 搜索服务名称、用户名、邮箱、备注
+    if not query:
+        # 返回该用户的所有条目
+        return base_query.all()
+
+    # 在该用户的基础上进行搜索
     search_term = f"%{query}%"
-    entries = PasswordEntry.query.filter(
+    entries = base_query.filter(
         db.or_(
             PasswordEntry.service_name.like(search_term),
             PasswordEntry.username.like(search_term),
