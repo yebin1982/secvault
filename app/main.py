@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
-from app.models import PasswordEntry, db
+from app.models import User, PasswordEntry, db
 from app.utils import PasswordEncryption, search_entries
 
 main = Blueprint('main', __name__)
@@ -17,6 +17,51 @@ def dashboard():
 def user_profile():
     """用户个人设置页面"""
     return render_template('profile.html')
+
+@main.route('/update_profile', methods=['POST'])
+@login_required
+def update_profile():
+    """更新用户信息"""
+    username = request.form.get('username')
+    email = request.form.get('email')
+
+    # 检查新的用户名或邮箱是否已被其他用户使用
+    if username != current_user.username and User.query.filter_by(username=username).first():
+        flash('该用户名已被使用，请选择其他用户名。', 'danger')
+        return redirect(url_for('main.user_profile'))
+    
+    if email != current_user.email and User.query.filter_by(email=email).first():
+        flash('该邮箱已被注册，请使用其他邮箱。', 'danger')
+        return redirect(url_for('main.user_profile'))
+
+    current_user.username = username
+    current_user.email = email
+    db.session.commit()
+
+    flash('您的个人信息已成功更新。', 'success')
+    return redirect(url_for('main.user_profile'))
+
+@main.route('/change_password', methods=['POST'])
+@login_required
+def change_password():
+    """修改密码"""
+    current_password = request.form.get('current_password')
+    new_password = request.form.get('new_password')
+    confirm_new_password = request.form.get('confirm_new_password')
+
+    if not current_user.check_password(current_password):
+        flash('当前密码不正确。', 'danger')
+        return redirect(url_for('main.user_profile'))
+
+    if new_password != confirm_new_password:
+        flash('新密码和确认密码不匹配。', 'danger')
+        return redirect(url_for('main.user_profile'))
+
+    current_user.set_password(new_password)
+    db.session.commit()
+
+    flash('您的密码已成功更新。', 'success')
+    return redirect(url_for('main.user_profile'))
 
 # ============ 添加功能 ============
 @main.route('/add_password', methods=['POST'])

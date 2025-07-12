@@ -4,29 +4,46 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8 offset-md-2">
         <h2 class="mb-4">个人设置</h2>
+
+        <!-- 修改用户信息 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">修改用户信息</h5>
+                <form method="POST" action="{{ url_for('main.update_profile') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">用户名</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ current_user.username }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">邮箱</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">更新信息</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 修改密码 -->
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">用户信息</h5>
-                <p><strong>用户名:</strong> {{ current_user.username }}</p>
-                <p><strong>邮箱:</strong> {{ current_user.email }}</p>
-                <hr>
-                <h5 class="card-title mt-4">修改密码</h5>
-                <p class="text-muted">此功能待开发。</p>
-                <!-- 
-                <form>
+                <h5 class="card-title">修改密码</h5>
+                <form method="POST" action="{{ url_for('main.change_password') }}">
                     <div class="mb-3">
                         <label for="current_password" class="form-label">当前密码</label>
-                        <input type="password" class="form-control" id="current_password">
+                        <input type="password" class="form-control" id="current_password" name="current_password" required>
                     </div>
                     <div class="mb-3">
                         <label for="new_password" class="form-label">新密码</label>
-                        <input type="password" class="form-control" id="new_password">
+                        <input type="password" class="form-control" id="new_password" name="new_password" required>
+                    </div>
+                     <div class="mb-3">
+                        <label for="confirm_new_password" class="form-label">确认新密码</label>
+                        <input type="password" class="form-control" id="confirm_new_password" name="confirm_new_password" required>
                     </div>
                     <button type="submit" class="btn btn-primary">更新密码</button>
                 </form>
-                -->
             </div>
         </div>
     </div>
