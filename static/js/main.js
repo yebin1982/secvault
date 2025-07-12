@@ -1,6 +1,24 @@
 // 页面加载完成后，默认加载所有密码条目
 document.addEventListener('DOMContentLoaded', function() {
     performSearch();
+
+    // 为所有密码可见性切换按钮添加事件监听器
+    document.querySelectorAll('.toggle-password-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetInputId = this.getAttribute('data-target-input');
+            const input = document.getElementById(targetInputId);
+            
+            if (input) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '隐藏';
+                } else {
+                    input.type = 'password';
+                    this.textContent = '显示';
+                }
+            }
+        });
+    });
 });
 
 // 搜索功能
@@ -179,18 +197,7 @@ function viewPassword(entryId) {
         });
 }
 
-// 切换密码字段的可见性
-function togglePasswordVisibility(inputId, button) {
-    const input = document.getElementById(inputId);
 
-    if (input.type === 'password') {
-        input.type = 'text';
-        button.textContent = '隐藏';
-    } else {
-        input.type = 'password';
-        button.textContent = '显示';
-    }
-}
 
 // 防止XSS攻击
 function escapeHTML(str) {
