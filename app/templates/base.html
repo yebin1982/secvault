@@ -20,7 +20,7 @@
         {% if current_user.is_authenticated %}
         <div class="navbar-nav ms-auto">
           <a class="nav-link" href="{{ url_for('main.dashboard') }}">主页</a>
-          <a class="nav-link" href="{{ url_for('main.profile') }}">个人设置</a>
+          <a class="nav-link" href="{{ url_for('main.user_profile') }}">个人设置</a>
           <a class="nav-link" href="{{ url_for('auth.logout') }}">退出</a>
         </div>
         {% endif %}

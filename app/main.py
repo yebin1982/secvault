@@ -12,6 +12,12 @@ def dashboard():
     """主页面"""
     return render_template('dashboard.html')
 
+@main.route('/profile')
+@login_required
+def user_profile():
+    """用户个人设置页面"""
+    return render_template('profile.html')
+
 # ============ 添加功能 ============
 @main.route('/add_password', methods=['POST'])
 @login_required
