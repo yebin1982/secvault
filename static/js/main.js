@@ -180,9 +180,8 @@ function viewPassword(entryId) {
 }
 
 // 切换密码字段的可见性
-function togglePasswordVisibility(inputId) {
+function togglePasswordVisibility(inputId, button) {
     const input = document.getElementById(inputId);
-    const button = input.nextElementSibling; // 获取旁边的按钮
 
     if (input.type === 'password') {
         input.type = 'text';
