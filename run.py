@@ -18,6 +18,7 @@ def init_default_user():
             print(f"默认用户已创建: {Config.DEFAULT_USERNAME}")
 
 if __name__ == '__main__':
+    # 在应用上下文中执行数据库操作
     with app.app_context():
         db.create_all()
         init_default_user()
